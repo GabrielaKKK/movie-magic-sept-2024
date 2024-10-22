@@ -18,6 +18,17 @@ router.post('/create', async (req, res) => {
     res.redirect('/');
 });
 
+router.get('/search', async (req, res) => {
+    // console.log(req.body); // POST
+    // console.log(req.params); // URL parameter
+    // console.log(req.query); // Query string in the url
+
+    const query = req.query;
+    const movies = await movieService.getAll(query);
+
+    res.render('home', {isSearch: true, movies});
+});
+
 router.get('/:movieId/details', async (req, res) => {
     const movieId = req.params.movieId;
     const movie = await movieService.getOne(movieId);
