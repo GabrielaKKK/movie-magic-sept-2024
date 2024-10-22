@@ -16,13 +16,23 @@ router.post('/create', async (req, res) => {
     await movieService.create(movieData);
 
     res.redirect('/');
-})
+});
 
 router.get('/:movieId/details', async (req, res) => {
     const movieId = req.params.movieId;
     const movie = await movieService.getOne(movieId);
 
+    // Prepare view data
+    movie.ratingView = getRatingViewData(movie.rating);
+
     res.render('movies/details', {movie});
-})
+});
+
+function getRatingViewData(reting) {
+    if (!Number.isInteger(reting)) {
+        return 'n\\a';
+    }
+    return '&#x2605;'.repeat(reting);
+}
 
 export default router;
